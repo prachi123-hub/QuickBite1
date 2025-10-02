@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QuickBite - Food Ordering</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="style.css">
+
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      color: #333;
+      
+    }
+    
+#bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 102vw;
+  height: 102vh;
+  object-fit: cover;
+  z-index: -1;
+  filter: brightness(0.9);
+}
+#bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: contain; /* ✅ Shows full video without cropping */
+  z-index: -1;
+  background-color: black; /* Optional: fills empty space if video doesn't cover entire screen */
+}
+
+
+
+
+
+
+    .overlay {
+  padding: 30px;
+  background-color: rgba(0, 0, 0, 0.4); /* semi-transparent dark overlay */
+  color: #fff; /* white text for better readability */
+  backdrop-filter: blur(4px); /* slight blur effect */
+}
+.cat {
+  background-color: rgba(255, 255, 255, 0.1); /* semi-transparent card */
+  color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease;
+}
+
+
+    
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    nav a {
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: bold;
+      color: #ff4d4d;
+    }
+
+    /* .search {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .search input {
+      padding: 10px;
+      width: 60%;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .search button {
+      padding: 10px 20px;
+      background-color: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    } */
+
+    
+
+
+    .highlight-info {
+  text-align: center;       /* center the text */
+  font-weight: bold;
+  margin: 20px auto;        /* center horizontally */
+  font-size: 1.1em;
+  max-width: 80%;           /* prevent it from stretching too wide */
+  padding: 15px 20px;       /* add padding */
+  background-color: pink; /* subtle pink */
+  border-left: 4px solid red;         /* highlight bar */
+  border-radius: 8px;
+  color: #ff4d4d;           /* match theme */
+}
+
+
+    .categories {
+      text-align: center;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 20px;
+      justify-items: center;
+      margin-top: 20px;
+      padding: 0 20px;
+    }
+
+    .cat {
+      background-color: #fff;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .cat:hover {
+      transform: scale(1.05);
+    }
+
+    .category-gif {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+      display: block;
+      margin: 0 auto 10px;
+    }
+
+    .cat span {
+      display: block;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .offers {
+      text-align: center;
+      margin: 50px 0 30px;
+    }
+
+    .offers h2 {
+      color: #ff4d4d;
+    }
+
+     
+     
+     footer {
+  text-align: center;
+  padding: 20px 10px;
+  background-color: rgba(0, 0, 0, 0); /* semi-transparent dark background */
+  color: #fff;                       /* white text for contrast */
+  margin-top: 40px;
+  font-size: 0.95em;
+       /* optional border for separation */
+}
+footer a {
+  color: #ff4d4d;
+  text-decoration: none;
+  margin: 0 5px;
+}
+footer i {
+  margin-right: 5px;
+}
+
+  </style>
+</head>
+
+<body>
+
+  <!-- Video Background -->
+  <video autoplay muted loop id="bg-video">
+    <source src="video.mp4" type="video/mp4" />
+    Your browser does not support HTML5 video.
+  </video>
+
+  <!-- Overlay Content -->
+   
+  <div class="overlay">
+    <!-- Header -->
+    <header>
+      <h1>🍴 QuickBite</h1>
+      <p>Delicious food delivered to your door</p>
+      <nav>
+        <a href="index.html">Home</a> |
+        <a href="menu.html">Menu</a> |
+        <a href="leftover.html">Leftover Food</a> |
+        <a href="cart.html">Cart</a>
+      </nav>
+    </header>
+
+    <!-- Search -->
+   <section class="search">
+  <input type="text" id="searchBox" placeholder="Search for food or restaurants..." onkeyup="showSuggestions()" />
+  <button onclick="searchFood()">Search</button>
+  <div id="suggestions" class="suggestions"></div> <!-- dropdown container -->
+</section>
+<script>
+  const Dishes = {  Breakfast: [
+    
+    { name: "Idli Sambar", price: 50, img: "breakfast1..jpg" },
+  { name: "Rava Dosa", price: 80, img: "breakfast2.jpg" },
+  { name: "Masala Dosa", price: 70, img: "breakfast3.webp" },
+  { name: "Onion Dosa", price: 75, img: "breakfast4.jpg" },
+  { name: "Uttapam", price: 70, img: "breakfast5.jpg" },
+  { name: "Medu Vada", price: 60, img: "breakfast6.webp" },
+  { name: "Upma", price: 40, img: "breakfast7.jpg" },
+  { name: "Kanda Poha", price: 35, img: "breakfast8.jpg" },
+  { name: "Batata Poha", price: 40, img: "breakfast9.jpg" },
+  { name: "Puri Bhaji", price: 60, img: "breakfast10.jpeg" },
+  { name: "Aloo Paratha", price: 50, img: "breakfast11.webp" },
+  { name: "Paneer Paratha", price: 70, img: "breakfast12.webp" },
+  { name: "Gobi Paratha", price: 65, img: "breakfast13.webp" },
+  { name: "Methi Paratha", price: 60, img: "breakfast14.webp" },
+  { name: "Chole Bhature", price: 100, img: "breakfast15.jpg" },
+  { name: "Shabudana Khichdi", price: 50, img: "breakfast16.jpeg" },
+  ],
+  
+  Lunch: [
+   
+  // Roti / Naan
+  { name: "Tandoori Roti", price: 20, img: "lunch15.jpg" },
+  { name: "Naan", price: 25, img: "lunch16.jpg" },
+  {name:"Roti",price:10,img:"lunch12.jpg"},
+  // Popular Vegetarian Curries
+  {name:"Dal Batti",price:100,img:"lunch1img"},
+  { name: "Paneer Butter Masala", price: 150, img: "lunch1.jpg" },
+  { name: "Dal Tadka", price: 120, img: "lunch2.jpg" },
+  
+  { name: "Chole Bhature", price: 130, img: "lunch4.jpg" },
+  { name: "Rajma Chawal", price: 110, img: "lunch5.jpg" },
+  { name: "Kadhi Pakora", price: 120, img: "lunch6.jpg" },
+  { name: "Shahi Paneer", price: 160, img: "lunch7.jpg" },
+  { name: "Kadai Paneer", price: 150, img: "lunch8.jpg" },
+  { name: "Baingan Bharta", price: 110, img: "lunch9.jpg" },
+  { name: "Bhindi Masala", price: 100, img: "lunch10.jpg" },
+  { name: "Gobi Masala", price: 110, img: "lunch11.jpg" },
+  { name: "Aloo Methi", price: 100, img: "lunch14.jpg" },
+
+  // South Indian / Regional Vegetarian Dishes
+ 
+
+  ],
+  Snacks: [
+  
+  { name: "Samosa", price: 30, img: "snack1.jpg" },
+  { name: "Kachori", price: 50, img: "snack2.jpg" },
+  { name: "Vada Pav", price: 40, img: "snack3.jpg" },
+  { name: "Pav Bhaji", price: 80, img: "snack4.jpg" },
+  { name: "Dhokla", price: 60, img: "snack5.jpg" },
+  { name: "Bhajiya / Pakora", price: 40, img: "snack6.jpg" },
+  { name: "Sundal", price: 50, img: "snack7.jpg" },
+  { name: "Corn Chaat", price: 60, img: "snack8.jpg" },
+  { name: "Bhel Puri", price: 50, img: "snack9.jpg" },
+  { name: "Sev Puri", price: 60, img: "snack10.jpg" },
+  { name: "Pani Puri / Golgappa", price: 50, img: "snack11.jpg" },
+  { name: "Dahi Puri", price: 60, img: "snack12.jpg" },
+  { name: "Aloo Tikki", price: 50, img: "snack13.jpg" },
+  { name: "Paneer Tikka", price: 120, img: "snack14.jpg" },
+
+  { name: "Cheese Balls", price: 90, img: "snack16.jpg" },
+ 
+  { name: "Momos (Veg)", price: 80, img: "snack20.jpg" },
+  { name: "Paneer Pakora", price: 100, img: "snack21.jpg" },
+  
+
+  ],
+  ColdDrinks: [
+   
+  { name: "Lassi (Sweet)", price: 50, img: "drink1.jpg" },
+   { name: "Cold Coffee", price: 60, img: "drink7.jpg" }, 
+  { name: "Mango Shake", price: 60, img: "drink3.jpg" },
+ 
+  { name: "Strawberry Shake", price: 70, img: "drink5.jpg" },
+  { name: "Chocolate Shake", price: 70, img: "drink6.jpg" },
+  { name: "Iced Tea", price: 50, img: "drink8.jpg" },
+  { name: "Lemonade", price: 40, img: "drink9.jpg" },
+  { name: "Falooda", price: 80, img: "drink11.jpg" },
+  { name: "Rose Sharbat", price: 40, img: "drink12.jpg" },
+  { name: "Kesar Badam Milk", price: 70, img: "drink13.jpg" },
+  { name: "Thandai", price: 60, img: "drink14.jpg" },
+  { name: "Cold Mojito (Virgin)", price: 80, img: "drink16.jpg" },
+ 
+
+
+  ]
+};
+const dishes = [
+  // Pizza
+ 
+  // Add more as needed...
+];
+function showSuggestions() {
+  let query = document.getElementById("searchBox").value.toLowerCase();
+  let suggestionBox = document.getElementById("suggestions");
+  suggestionBox.innerHTML = "";
+
+  if(query.length > 0) {
+    let filtered = dishes.filter(dish => dish.name.toLowerCase().includes(query));
+
+    filtered.forEach(dish => {
+      let div = document.createElement("div");
+      div.classList.add("suggestion-item");
+      div.innerHTML = `${dish.name} – ₹${dish.price} <small>(${dish.category})</small>`;
+      
+      // Click: go to menu page with dish name in query
+      div.onclick = () => {
+        window.location.href = "menu.html?dish=" + encodeURIComponent(dish.name);
+      };
+
+      suggestionBox.appendChild(div);
+    });
+  }
+}
+
+   function renderSearchResults(results) {
+  menu.innerHTML = '';
+  if(results.length === 0) {
+    menu.innerHTML = '<p style="text-align:center; font-weight:bold;">No dishes found.</p>';
+    return;
+  }
+  results.forEach((item, index) => {
+    const dishDiv = document.createElement("div");
+    dishDiv.classList.add("item");
+    dishDiv.innerHTML = `
+      <img src="${item.img}" alt="${item.name}">
+      <h3>${item.name}</h3>
+      <p>₹${item.price}</p>
+    `;
+    menu.appendChild(dishDiv);
+  });
+}
+
+function searchFood() {
+  let query = document.getElementById("searchBox").value.trim();
+  if(query === "") return;
+
+  // Redirect to menu.html with the typed dish
+  window.location.href = "menu.html?dish=" + encodeURIComponent(query);
+}
+</script>
+
+
+    <!-- Info Line -->
+    <p class="highlight-info">You’ll get a variety of options in Veg and Non-Veg — and even share your leftover food!</p>
+
+    <!-- Categories -->
+    <<section class="categories">
+  <div class="category-grid">
+    <div class="cat">
+      
+      <a href="menu.html?category=Breakfast">
+        <img src="Breakfast.gif" alt="Breakfast" class="category-gif" />
+        <span>🍳 Breakfast</span>
+        
+      </a>
+    </div>
+
+    <div class="cat">
+      <a href="menu.html?category=Lunch">
+        <img src="Lunch1.jpg.jpg" alt="Lunch" class="category-gif" />
+        <span>🍛 Lunch</span>
+      </a>
+    </div>
+
+    <div class="cat">
+      <a href="menu.html?category=Dinner">
+        <img src="Dinner.jpg.webp" alt="Dinner" class="category-gif" />
+        <span>🍽️ Dinner</span>
+      </a>
+    </div>
+
+    <div class="cat">
+      <a href="menu.html?category=ColdDrinks">
+        <img src="ColdDrinks.gif" alt="Cold Drinks" class="category-gif" />
+        <span>🥤 Cold Drinks</span>
+      </a>
+    </div>
+
+    <div class="cat">
+      <a href="menu.html?category=Snacks">
+        <img src="Snacks.jpg" alt="Snacks" class="category-gif" />
+        <span>🍟 Snacks</span>
+      </a>
+    </div>
+
+    <div class="cat">
+      <a href="leftover.html">
+        <img src="Leftovers.webp" alt="Leftovers" class="category-gif" />
+        <span>♻️ Share Leftover</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+    <!-- Special Offers -->
+    <section class="offers">
+      <h2>🔥 Special Offers</h2>
+      <p>20% Off on First Order • Free Delivery above ₹300</p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+  <p>📧 Contact: <a href="mailto:info@quickbite.com">info@quickbite.com</a><br />
+    🔗 Connect with us:
+    <a href="https://www.instagram.com/quickbite" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i> Instagram</a> |
+    <a href="https://www.facebook.com/quickbite" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook"></i> Facebook</a>
+  </p>
+</footer>
+
+  </div>
+ 
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OTP Verification</title>
+<style>
+  body { font-family: Arial; background: #fff5f8; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+  h1 { color: #e91e63; text-align: center; margin-bottom: 10px; }
+  p { text-align: center; margin-bottom: 20px; font-weight: bold; }
+  form { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); max-width: 400px; width: 100%; display: flex; flex-direction: column; align-items: center; }
+  input { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 20px; text-align: center; font-size: 16px; }
+  button { width: 100%; padding: 10px; border: none; border-radius: 8px; background: #4caf50; color: white; font-weight: bold; cursor: pointer; }
+  button:hover { background: #45a049; }
+</style>
+</head>
+<body>
+
+<h1>📲 Verify Your Phone</h1>
+<p>Enter the OTP sent to your phone</p>
+
+<form onsubmit="verifyOtp(event)">
+  <input type="text" placeholder="Enter OTP" pattern="[0-9]{4,6}" required>
+  <button type="submit">Verify & Continue</button>
+</form>
+
+<script>
+  function verifyOtp(e) {
+    e.preventDefault();
+    alert("OTP Verified !");
+    window.location.href = "checkout.html";
+  }
+</script>
+
+</body>
+</html>

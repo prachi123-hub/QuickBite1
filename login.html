@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <style>
+    body { font-family: Arial; background: #fff5f8; padding: 20px; }
+    h1 { color: #e91e63; text-align: center; }
+    form { max-width: 400px; margin: auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    label { display: block; margin-bottom: 10px; }
+    input { width: 100%; padding: 8px; margin-top: 4px; border-radius: 6px; border: 1px solid #ccc; }
+    button { width: 100%; padding: 10px; background: #4caf50; color: white; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; }
+    button:hover { background: #45a049; }
+    p { text-align: center; margin-top: 15px; }
+    a { color: #e91e63; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <h1>🔐 Login to QuickBite</h1>
+  <form onsubmit="login(event)">
+    <label>Email:
+      <input type="email" id="email" required>
+    </label>
+    <label>Password:
+      <input type="password" id="password" required>
+    </label>
+    <button type="submit">Login</button>
+  </form>
+  <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
+
+  <script>
+    function login(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      // Dummy login logic
+      if(email && password) {
+        localStorage.setItem('loggedIn', 'true'); // Set logged-in flag
+        alert("Login successful!");
+        window.location.href = "checkout.html"; // Redirect to checkout/cart page
+      } else {
+        alert("Please enter valid credentials.");
+      }
+    }
+  </script>
+</body>
+</html>

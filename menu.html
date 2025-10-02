@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Indian Menu</title>
+<style>
+  body { font-family: Arial; background: #fff5f8; margin:0; padding:20px; }
+.navbar { display:flex; gap:10px; justify-content:center; margin-bottom:20px; }
+.navbar button, .category-btn { padding:6px 16px; border:none; border-radius:20px; background:#e91e63; color:white; font-weight:bold; cursor:pointer; transition:0.3s; }
+.navbar button:hover, .category-btn:hover { background:#d81b60; }
+h1 { text-align:center; color:#e91e63; margin-bottom:20px; text-transform:capitalize; }
+.category-nav { text-align:center; margin-bottom:20px; }
+.container { display:flex; gap:20px; }
+.menu-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:20px; flex:3; }
+.item { background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1); text-align:center; padding:15px; transition:0.2s; display:flex; flex-direction:column; justify-content:space-between; }
+.item:hover { transform:scale(1.05); }
+.item img { width:100%; height:150px; object-fit:cover; border-radius:10px; }
+.item h3 { margin:10px 0 5px; font-size:18px; color:#333; }
+.item p { margin:0; color:#555; font-weight:bold; }
+.controls { min-height:40px; display:flex; justify-content:center; align-items:center; margin-top:10px; }
+.quantity-controls { display:flex; justify-content:center; align-items:center; gap:10px; }
+.quantity-controls button { width:30px; height:30px; border-radius:50%; font-weight:bold; }
+
+/* Green Add button for each dish */
+.item .btn {
+  background-color: #4caf50; /* green */
+  color: white;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+.item .btn:hover {
+  background-color: #45a049; /* darker green on hover */
+}
+
+#cart { flex:1; background:#fff; border-radius:12px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.1); position:sticky; top:20px; }
+#cart h2 { color:#e91e63; }
+#cart ul { list-style:none; padding:0; }
+#cart li { margin:5px 0; font-weight:bold; }
+
+/* Green Add to Cart button */
+#addToCartBtn {
+  display:none; 
+  margin-top:10px; 
+  width:100%;
+  background-color: #4caf50; /* green */
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+#addToCartBtn:hover {
+  background-color: #45a049; /* darker green on hover */
+}
+
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <button onclick="goHome()">Home</button>
+  <button onclick="openCart()">Cart 🛒</button>
+</div>
+
+<div class="category-nav">
+  <button class="category-btn" onclick="switchCategory('Breakfast')">Breakfast</button>
+  <button class="category-btn" onclick="switchCategory('Lunch')">Lunch</button>
+  <button class="category-btn" onclick="switchCategory('Dinner')">Dinner</button>
+  <button class="category-btn" onclick="switchCategory('Snacks')">Snacks</button>
+  <button class="category-btn" onclick="switchCategory('ColdDrinks')">Cold Drinks</button>
+</div>
+
+<h1 id="categoryTitle">🍴 Menu</h1>
+
+<div class="container">
+  <div class="menu-grid" id="menu"></div>
+
+  <div id="cart">
+    <h2>🛒 Cart</h2>
+    <ul id="cartItems"></ul>
+    <p id="total">Total: ₹0</p>
+    <button class="cart-btn" id="addToCartBtn">Add Item to Cart</button>
+  </div>
+</div>
+
+<script>
+const Dishes = {  Breakfast: [
+    
+    { name: "Idli Sambar", price: 50, img: "breakfast1..jpg" },
+  { name: "Rava Dosa", price: 80, img: "breakfast2.jpg" },
+  { name: "Masala Dosa", price: 70, img: "breakfast3.webp" },
+  { name: "Onion Dosa", price: 75, img: "breakfast4.jpg" },
+  { name: "Uttapam", price: 70, img: "breakfast5.jpg" },
+  { name: "Medu Vada", price: 60, img: "breakfast6.webp" },
+  { name: "Upma", price: 40, img: "breakfast7.jpg" },
+  { name: "Kanda Poha", price: 35, img: "breakfast8.jpg" },
+  { name: "Batata Poha", price: 40, img: "breakfast9.jpg" },
+  { name: "Puri Bhaji", price: 60, img: "breakfast10.jpeg" },
+  { name: "Aloo Paratha", price: 50, img: "breakfast11.webp" },
+  { name: "Paneer Paratha", price: 70, img: "breakfast12.webp" },
+  { name: "Gobi Paratha", price: 65, img: "breakfast13.webp" },
+  { name: "Methi Paratha", price: 60, img: "breakfast14.webp" },
+  { name: "Chole Bhature", price: 100, img: "breakfast15.jpg" },
+  { name: "Shabudana khichdi", price: 50, img: "breakfast16.jpeg" },
+  
+  
+   ],
+    // Add other breakfast items
+  
+  Lunch: [
+   
+  // Roti / Naan
+  { name: "Tandoori Roti", price: 20, img: "lunch15.jpg" },
+  {name:"Roti",price:10,img:"lunch12.jpg"},
+  // Popular Vegetarian Curries
+  {name:"Dal Batti",price:100,img:"lunch1img.jpg"},
+  { name: "Paneer Butter Masala", price: 150, img: "lunch1.jpg" },
+  { name: "Dal Tadka", price: 120, img: "lunch2.jpg" },
+  { name: "Masala Bhendi", price: 100, img: "lunch3.jpg" },
+  { name: "Jeera rice", price: 130, img: "lunch4.jpg" },
+  { name: "Thali", price: 200, img: "lunch5.jpg" },
+  { name: "Masala Papad", price: 50, img: "lunch6.jpg" },
+  { name: "Salad", price: 60, img: "lunch7.jpg" },
+  { name: "Kadai Paneer", price: 150, img: "lunch8.jpg" },
+  { name: "Baingan Bharta", price: 110, img: "lunch9.jpg" },
+  { name: "Shev bhaaji", price: 110, img: "lunch11.jpg" },
+  { name: "Aloo Methi", price: 100, img: "lunch14.jpg" },
+   { name: "Rajma Chawal", price: 110, img: "lunch16.jpg" },
+   
+   
+    { name: "Choole Bature", price: 110, img: "lunch17.jpg" },
+
+
+  // South Indian / Regional Vegetarian Dishes
+  
+
+
+  ],
+  Dinner: [
+  
+  // Roti / Naan / Paratha
+  { name: "Tandoori Roti", price: 20, img: "dinner1.jpg" },
+  { name: "Butter Naan", price: 25, img: "dinner2.jpg" },
+  { name: "Garlic Naan", price: 30, img: "dinner3.jpg" },
+  { name: "Plain Paratha", price: 25, img: "dinner4.jpg" },
+  { name: "Lachha Paratha", price: 35, img: "dinner5.jpg" },
+  { name: "Methi Paratha", price: 30, img: "dinner6.jpg" },
+
+  // Vegetarian Curries
+  { name: "Paneer Butter Masala", price: 150, img: "dinner7.jpg" },
+  { name: " Paneer Chilli", price: 160, img: "dinner8.jpg" },
+  { name: "Kaju Curry", price: 150, img: "dinner9.jpg" },
+  { name: "Matar Paneer", price: 140, img: "dinner10.jpg" },
+  { name: "Palak Paneer", price: 150, img: "dinner11.jpg" },
+  { name: "Dal Khichdi", price: 120, img: "dinner12.jpg" },
+  { name: "Dal Makhani", price: 130, img: "dinner13.jpg" },
+  { name: "Kadhi Pakora", price: 120, img: "dinner14.jpg" },
+  { name: "Manchurian", price: 110, img: "dinner15.jpg" },
+  { name: "Pav Bhaji", price: 120, img: "dinner16.jpg" },
+  
+  
+
+
+
+  ],
+  Snacks: [
+  
+  { name: "Samosa", price: 30, img: "snacks1.jpg" },
+  { name: "Kachori", price: 50, img: "ssnacks.jpg" },
+  { name: "Vada Pav", price: 40, img: "snacks3.jpg" },
+  { name: "Dhokla", price: 60, img: "snacks4.jpg" },
+  { name: "Bhajiya / Pakora", price: 40, img: "snacks6.jpg" },
+  { name: "Sundal", price: 50, img: "snacks7.jpg" },
+  { name: "Corn Chaat", price: 60, img: "snacks8.jpg" },
+  { name: "Bhel Puri", price: 50, img: "snacks9.jpg" },
+  { name: "Sev Puri", price: 60, img: "snack10.jpg" },
+  { name: "Pani Puri / Golgappa", price: 50, img: "snack11.jpg" },
+  { name: "Dahi Puri", price: 60, img: "snack12.jpg" },
+  { name: "Aloo Tikki", price: 50, img: "snack13.jpg" },
+  { name: "Paneer Tikka", price: 120, img: "snack14.jpg" },
+  { name: "Cheese Balls", price: 90, img: "snack15.jpg" },
+  { name: "Momos (Veg)", price: 80, img: "snack16.jpg" },
+  { name: "Paneer Pakora", price: 100, img: "snack21.jpg" },
+  
+
+
+  ],
+  ColdDrinks: [
+   
+  { name: "Lassi (Sweet)", price: 50, img: "drink1.jpg" },
+  { name: "Mango Shake", price: 60, img: "drink3.jpg" },
+  { name: "Cold Coffee", price: 60, img: "drink4.jpg" },
+  { name: "Strawberry Shake", price: 70, img: "drink5.jpg" },
+  { name: "Chocolate Shake", price: 70, img: "drink6.jpg" },
+  { name: "Iced Tea", price: 50, img: "drink8.jpg" },
+  { name: "Lemonade", price: 40, img: "drink9.jpg" },
+  { name: "Mojito", price: 50, img: "drink10.jpg" },
+  { name: "Falooda", price: 80, img: "drink11.jpg" },
+  { name: "Rose Sharbat", price: 40, img: "drink12.jpg" },
+  { name: "Kesar Badam Milk", price: 70, img: "drink13.jpg" },
+  { name: "Thandai", price: 60, img: "drink14.jpg" },
+ 
+  ]
+};
+
+
+const menu = document.getElementById("menu");
+const cartItems = document.getElementById("cartItems");
+const totalEl = document.getElementById("total");
+const addToCartBtn = document.getElementById("addToCartBtn");
+const categoryTitle = document.getElementById("categoryTitle");
+
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let currentCategory = new URLSearchParams(window.location.search).get("category") || "Breakfast";
+categoryTitle.textContent = `🍴 ${currentCategory}`;
+function switchCategory(category) {
+  currentCategory = category; // update current category
+  categoryTitle.textContent = `🍴 ${currentCategory}`; // update title
+  renderMenu(); // render menu for selected category
+}
+// Go to homepage
+function goHome() {
+  window.location.href = "index.html"; // change this if your homepage has a different name
+}
+
+// Open cart page
+function openCart() {
+  window.location.href = "cart.html";
+}
+
+
+
+// Render menu function
+function renderMenu() {
+  menu.innerHTML = '';
+  const currentDishes = Dishes[currentCategory];
+
+  currentDishes.forEach((item, index) => {
+    const dishDiv = document.createElement("div");
+    dishDiv.classList.add("item");
+    dishDiv.innerHTML = `
+      <img src="${item.img}" alt="${item.name}">
+      <h3>${item.name}</h3>
+      <p>₹${item.price}</p>
+      <div class="controls">
+        <button class="btn" id="addBtn${index}">Add</button>
+        <div class="quantity-controls" id="qty${index}" style="display:none;">
+          <button id="minus${index}">-</button>
+          <span id="count${index}">1</span>
+          <button id="plus${index}">+</button>
+        </div>
+      </div>
+    `;
+    menu.appendChild(dishDiv);
+
+    const addBtn = document.getElementById(`addBtn${index}`);
+    const qtyControls = document.getElementById(`qty${index}`);
+    const countEl = document.getElementById(`count${index}`);
+    let qty = 1;
+
+    // Add button click
+    addBtn.addEventListener("click", () => {
+      addBtn.style.display = "none";
+      qtyControls.style.display = "flex";
+      qty = 1;
+
+      // Check if item already in cart
+      const existing = cart.find(ci => ci.name === item.name);
+      if (!existing) {
+        cart.push({ ...item, qty: qty });
+      }
+      renderCart();
+    });
+
+    // Plus button
+    document.getElementById(`plus${index}`).addEventListener("click", () => {
+      qty++;
+      countEl.textContent = qty;
+      const existing = cart.find(ci => ci.name === item.name);
+      if (existing) existing.qty = qty;
+      renderCart();
+    });
+
+    // Minus button
+    document.getElementById(`minus${index}`).addEventListener("click", () => {
+      if (qty > 1) {
+        qty--;
+        countEl.textContent = qty;
+        const existing = cart.find(ci => ci.name === item.name);
+        if (existing) existing.qty = qty;
+      } else {
+        qtyControls.style.display = "none";
+        addBtn.style.display = "block";
+        cart = cart.filter(ci => ci.name !== item.name);
+      }
+      renderCart();
+    });
+  });
+}
+
+// Render cart sidebar
+function renderCart() {
+  cartItems.innerHTML = '';
+  let total = 0;
+  cart.forEach(item => {
+    cartItems.innerHTML += `<li>${item.name} x ${item.qty} - ₹${item.price * item.qty}</li>`;
+    total += item.price * item.qty;
+  });
+
+  totalEl.textContent = `Total: ₹${total}`;
+  addToCartBtn.style.display = cart.length ? "block" : "none";
+
+  // Save to localStorage
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+// Add to Cart button redirects to cart.html
+addToCartBtn.addEventListener("click", () => {
+  localStorage.setItem('cart', JSON.stringify(cart));
+  window.location.href = "cart.html";
+});
+
+// Initial render
+renderMenu();
+renderCart();
+
+
+
+
+</script>
+
+
+</body>
+</html>

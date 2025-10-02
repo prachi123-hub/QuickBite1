@@ -1,0 +1,345 @@
+/* Video Background */
+
+
+/* Overlay styling */
+
+
+.overlay {
+  position: relative;
+  z-index: 2;
+  padding: 30px;
+  background-color: rgba(0, 0, 0, 0.3); /* Black tint with transparency */
+  backdrop-filter: blur(4px); /* Slight blur for readability */
+  color: #fff; /* White text for contrast */
+  
+
+}
+section {
+  background-color: rgba(255, 255, 255, 0.05); /* Very subtle white */
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+#bg-video {
+  filter: brightness(0.85); /* Slight darkening to make text pop */
+}
+
+
+
+
+/* Header styling */
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 50px;
+  margin: 0;
+}
+
+header p {
+  font-size: 20px;
+  margin: 5px 0 15px;
+}
+
+/* Navigation links */
+nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
+  font-weight: bold;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* Search bar */
+.search {
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.search input {
+  padding: 10px;
+  width: 190px;
+  border-radius: 5px;
+  border: none;
+}
+
+.search button {
+  padding: 10px 20px;
+  background: green;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.suggestions {
+  position: absolute;
+  top: 100%;            /* directly below input */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;           /* same as input */
+  background: #fff;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  max-height: 200px;    /* scroll if too long */
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.suggestion-item {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.suggestion-item:hover {
+  background-color: #ffeded;
+}
+
+/* Categories grid */
+.categories {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Responsive */
+  gap: 12px;
+  margin-top: 15px;
+  justify-items: center;
+}
+
+.cat {
+  background-color: #ffeded;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  transition: all 0.2s ease-in-out;
+}
+
+.cat a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.cat:hover {
+  transform: scale(1.05);
+  background-color: #ffd6d6;
+}
+.cat {
+  text-align: center;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.cat img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.cat span {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+.cat:hover {
+  transform: scale(1.05);
+}
+.cat {
+  text-align: center;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.cat img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.cat span {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+.cat:hover {
+  transform: scale(1.05);
+}
+
+
+  .category-gif {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }
+
+
+
+/* Offers section */
+.offers {
+  text-align: center;
+  margin-bottom: 100px;
+ 
+
+}
+
+
+.item .quantity-controls {
+  gap: 10px;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #f8f8f8;
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+.navbar button {
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #e91e63;
+  color: white;
+  font-weight: bold;
+}
+
+.navbar button:hover {
+  background-color: #d81b60;
+}
+
+
+/* Footer */
+
+
+
+
+.leftover {
+  text-align: center;
+  padding: 20px;
+}
+
+.upload-food form, .available-leftovers {
+  background: rgba(255,255,255,0.1);
+  padding: 20px;
+  border-radius: 10px;
+  margin: 15px auto;
+  max-width: 600px;
+}
+
+.food-item {
+  display: inline-block;
+  margin: 10px;
+  background: rgba(255,255,255,0.2);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.food-item img {
+  width: 150px;
+  border-radius: 10px;
+}
+
+.food-item button {
+  margin-top: 5px;
+  padding: 8px 15px;
+  background: orange;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.highlight-info {
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ff4d4d;
+  background: #fff3f3;
+  padding: 15px 20px;
+  border-left: 5px solid #ff4d4d;
+  border-radius: 8px;
+  margin: 30px auto;
+  text-align: center;
+  width: 55%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+
+header {
+  height: 100px; /* set your header height explicitly */
+}
+
+.cart {
+  position: fixed;
+  right: 0;
+  top: 100px; /* match header height */
+  width: 280px;
+  height: calc(100% - 100px); /* subtract header height */
+  background: white;
+  box-shadow: -3px 0 8px rgba(0,0,0,0.2);
+  padding: 15px;
+  overflow-y: auto;
+  z-index: 999; /* make sure it's on top */
+}
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #222;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+footer a {
+  color: #ffcc00;
+  margin: 0 10px;
+  transition: 0.3s;
+}
+
+footer a:hover {
+  color: white;
+  text-shadow: 0 0 8pxn blue;
+}
+
+
+
+/* .leftover {
+  text-align: center;
+  padding: 20px;
+  background: url("photo4.jpg.jpg") no-repeat center center;
+  background-size: contain; /* covers whole screen but may crop */
+  /* min-height: 100vh; */
+/* } */ 
+

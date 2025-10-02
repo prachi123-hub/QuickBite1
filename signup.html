@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up</title>
+<style>
+  body { font-family: Arial; background: #fff5f8; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+  h1 { color: #e91e63; text-align: center; }
+  form { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); max-width: 400px; width: 100%; }
+  label { display: block; margin: 10px 0; font-weight: bold; }
+  input { width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc; }
+  button { width: 100%; padding: 10px; margin-top: 20px; border: none; border-radius: 8px; background: #4caf50; color: white; font-weight: bold; cursor: pointer; }
+  button:hover { background: #45a049; }
+  p { text-align: center; margin-top: 15px; }
+  a { color: #e91e63; text-decoration: none; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>📝 Sign Up for QuickBite</h1>
+<form onsubmit="signup(event)">
+  <label>Name
+    <input type="text" name="name" required>
+  </label>
+  <label>Email
+    <input type="email" name="email" required>
+  </label>
+  <label>Phone
+    <input type="tel" name="phone" pattern="[0-9]{10}" required>
+  </label>
+  <label>Password
+    <input type="password" name="password" required>
+  </label>
+  <button type="submit">Continue</button>
+</form>
+
+<p>Already have an account? <a href="login.html">Login here</a></p>
+
+<script>
+  function signup(e) {
+    e.preventDefault();
+    alert("Signup successful!");
+    // Redirect to OTP page
+    window.location.href = "otp.html";
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leftover Food</title>
+  <style>
+    body {
+      
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      background: url('background.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+    .overlay {
+      background-color: rgba(0,0,0,0.6);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    h2 { text-align: center; margin-bottom: 30px; }
+    .container { max-width: 900px; margin: auto; margin-bottom: 50px; background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px; }
+    .container h3 { text-align: center; margin-bottom: 15px; }
+    form input, form select, form button {
+      width: 100%; padding: 10px; margin: 8px 0; border-radius: 8px; border: none; outline: none;
+    }
+    form button { background-color: #4CAF50; color: white; font-weight: bold; cursor: pointer; }
+    form button:hover { background-color: #45a049; }
+    .food-item { display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.1); padding: 15px; margin: 15px 0; border-radius: 12px; flex-wrap: wrap; }
+    .food-item img { width: 120px; height: 120px; object-fit: cover; border-radius: 12px; }
+    .food-info { flex-grow: 1; }
+    .food-info h4 { margin: 0; font-size: 20px; }
+    .food-info p { margin: 3px 0; }
+    .food-item button { background-color: #ff9800; border-radius: 8px; padding: 10px 15px; font-weight: bold; cursor: pointer; color: white; margin-top: 5px; }
+    .food-item button:hover { background-color: #e68a00; }
+    .pickup-details { background: rgba(255,255,255,0.2); padding: 10px; border-radius: 10px; margin-top: 10px; display: none; width: 100%; }
+    .pickup-details button { background-color: #2196F3; margin-top: 10px; }
+    .feedback { margin-top: 10px; display: none; }
+    .feedback textarea { width: 100%; padding: 8px; border-radius: 8px; border: none; }
+    .feedback button { background-color: #4CAF50; margin-top: 5px; }
+  </style>
+</head>
+<body>
+<div class="overlay">
+  <h2>Share & Claim Leftover Food</h2>
+
+  <!-- Share Food -->
+  <div class="container">
+    <h3>Share Your Leftover Food</h3>
+    <form id="shareForm">
+      <input type="text" id="foodName" placeholder="Food Name" required>
+      <select id="foodType" required>
+        <option value="" disabled selected>Food Type</option>
+        <option>Veg</option>
+        <option>Non-Veg</option>
+        <option>Snacks</option>
+        <option>Beverages</option>
+      </select>
+      <input type="number" id="foodQty" placeholder="Quantity" required>
+      <select id="foodLocation" required>
+        <option value="" disabled selected>Pickup Location</option>
+        <option>Shivaji Nagar</option>
+        <option>Kothrud</option>
+        <option>Bavdhan</option>
+        <option>Baner</option>
+        <option>Pashan</option>
+        <option>Viman Nagar</option>
+        <option>Hinjewadi</option>
+        <option>Hadapsar</option>
+        <option>Koregaon Park</option>
+        <option>Magarpatta</option>
+        <option>Undri</option>
+        <option>Fergusson College Road</option>
+        <option>Aundh</option>
+        <option>Wanowrie</option>
+      </select>
+      <input type="file" id="foodImage" required>
+      <button type="submit">Share</button>
+    </form>
+  </div>
+
+  <!-- Available Leftovers -->
+  <div class="container">
+    <h3>Available Leftover Meals</h3>
+    <div id="foodList"></div>
+  </div>
+</div>
+
+<script>
+  const shareForm = document.getElementById('shareForm');
+  const foodList = document.getElementById('foodList');
+  let foods = [];
+
+  shareForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('foodName').value;
+    const type = document.getElementById('foodType').value;
+    const qty = parseInt(document.getElementById('foodQty').value);
+    const loc = document.getElementById('foodLocation').value;
+    const img = document.getElementById('foodImage').files[0] ? URL.createObjectURL(document.getElementById('foodImage').files[0]) : 'placeholder.jpg';
+
+    const foodItem = { name, type, qty, loc, img, claimed: false };
+    foods.push(foodItem);
+    renderFoods();
+    shareForm.reset();
+    alert('Food shared successfully!');
+  });
+
+  function renderFoods() {
+    foodList.innerHTML = '';
+    foods.forEach((food, index) => {
+      const div = document.createElement('div');
+      div.className = 'food-item';
+      div.innerHTML = `
+        <img src="${food.img}" alt="${food.name}">
+        <div class="food-info">
+          <h4>${food.name} (${food.type})</h4>
+          <p>Quantity: ${food.qty} ${food.qty>1 ? 'servings' : 'serving'}</p>
+          <p>Location: ${food.loc}</p>
+        </div>
+        <button ${food.claimed ? 'disabled' : ''} onclick="claimFood(${index})">${food.claimed ? 'Claimed' : 'Claim'}</button>
+        <div class="pickup-details" id="pickup-${index}">
+          <p><strong>Pickup Instructions:</strong> Please collect from ${food.loc} safely.</p>
+          <button onclick="markReceived(${index})">Mark as Received</button>
+          <div class="feedback" id="feedback-${index}">
+            <textarea placeholder="Leave feedback..."></textarea>
+            <button onclick="submitFeedback(${index})">Submit Feedback</button>
+          </div>
+        </div>
+      `;
+      foodList.appendChild(div);
+    });
+  }
+
+  function claimFood(index) {
+    const food = foods[index];
+    if(food.qty > 1) {
+      food.qty--;
+    } else {
+      food.claimed = true;
+    }
+    alert(`You claimed ${food.name} from ${food.loc}. Please pick up safely!`);
+    document.getElementById(`pickup-${index}`).style.display = 'block';
+    renderFoods();
+  }
+
+  function markReceived(index) {
+    alert(`You marked ${foods[index].name} as received. Thank you!`);
+    document.getElementById(`feedback-${index}`).style.display = 'block';
+  }
+
+  function submitFeedback(index) {
+    const feedback = document.querySelector(`#feedback-${index} textarea`).value;
+    if(feedback.trim() === '') { alert('Please write feedback.'); return; }
+    alert(`Feedback submitted: "${feedback}"`);
+    document.querySelector(`#feedback-${index} textarea`).value = '';
+    document.querySelector(`#feedback-${index}`).style.display = 'none';
+  }
+</script>
+</body>
+</html>

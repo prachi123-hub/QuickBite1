@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head><title>Payment - QuickBite</title></head>
+<body>
+  <h1>💳 Payment Options</h1>
+  <form onsubmit="pay(event)">
+    <label><input type="radio" name="payment" value="card" required> Credit/Debit Card</label><br>
+    <label><input type="radio" name="payment" value="upi"> UPI / QR</label><br>
+    <label><input type="radio" name="payment" value="cod"> Cash on Delivery</label><br><br>
+    <button type="submit">Place Order</button>
+  </form>
+
+  <script>
+    function pay(e) {
+      e.preventDefault();
+      // Optional: Save payment method in localStorage
+      localStorage.removeItem("cart");  // Clear cart after payment
+      alert("Payment successful (dummy)!");
+      window.location.href = "success.html";
+    }
+  </script>
+</body>
+</html>
